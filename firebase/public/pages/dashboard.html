@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Route Planning</title>
+    
+    <script src="/pages/assets/js/config.js"></script>
+    <script defer src="https://x-route-planning.web.app/__/firebase/9.22.1/firebase-app-compat.js"></script>
+    <script defer src="https://x-route-planning.web.app/__/firebase/9.22.1/firebase-auth-compat.js"></script>
+    <script defer src="https://x-route-planning.web.app/__/firebase/9.22.1/firebase-analytics-compat.js"></script>
+</head>
+<body>
+    <script>
+        var dashboard = null
+        class Dashboard{
+            constructor(fire){
+                this.FIREBASE_AUTH = fire.auth()
+            }
+            IAmAuthorized(email, password){
+                if(email && password){
+                    this.FIREBASE_AUTH.signInWithEmailAndPassword(email, password)
+                    .then((userCredential) => {
+                        let user = userCredential.user
+                        window.localStorage.setItem('uid', user.uid)
+                        window.localStorage.setItem('email', user.email)
+                        window.localStorage.setItem('password', password)
+                        this.SetPageTitle(user.email)
+                    })
+                    .catch((error) => {
+                        console.log(error.code)
+                    })
+                }
+            }
+            SetPageTitle(xEmail){
+                document.title = 'Dashboard '+xEmail
+            }
+        }
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            firebase.initializeApp(config)
+            var app = firebase.app() 
+            var analytics = firebase.analytics()
+
+            dashboard = new Dashboard(firebase)
+            let userUid   = window.localStorage.getItem('uid') || null
+            let userEmail = window.localStorage.getItem('email') || ''
+            if(!userUid){                                                           alert('no tengo que hacer esto')
+                let userPass  = window.localStorage.getItem('password')
+                dashboard.IAmAuthorized(userEmail, userPass)
+            } else {
+                console.log('i am authorized '+userUid)
+                dashboard.SetPageTitle(userEmail)
+            }
+        })
+        
+    </script>
+</body>
+</html>

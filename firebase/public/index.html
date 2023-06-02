@@ -109,10 +109,9 @@
                 }, 3000)
             }
             SetDefaultEmailPassword(){
-                let userUid   = window.localStorage.getItem('uid') 
                 let userEmail = window.localStorage.getItem('email')
                 let userPass  = window.localStorage.getItem('password')
-                if(userUid && userEmail && userPass){
+                if(userEmail && userPass){
                     InputEmailEl.value    = userEmail
                     InputPasswordEL.value = userPass
                 }

@@ -79,7 +79,6 @@
                 this.FIREBASE_APP.createUserWithEmailAndPassword(email, password)
                 .then((userCredential) => {
                   var user = userCredential.user
-                  window.localStorage.setItem('uid', user.uid)
                   window.localStorage.setItem('email', user.email)
                   window.localStorage.setItem('password', password)
                   ARegister.innerText = 'Congratulations, You are registered'
